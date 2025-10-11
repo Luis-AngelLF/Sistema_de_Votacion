@@ -9,3 +9,6 @@ docker build -t suma-cifrada .
 
 **Ejecutarlo:**
 docker run -it suma-cifrada
+
+O instalar las librerías con:
+pip3 install phe
