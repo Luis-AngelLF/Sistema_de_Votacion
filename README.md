@@ -1,8 +1,8 @@
 # Suma-Cifrada
-Para el proyecto de criptografía. [Descargar Docker] y hacer esto:
+Para el proyecto de criptografía. <[Descargar Docker](https://learn.microsoft.com/es-mx/visualstudio/docker/tutorials/docker-tutorial?WT.mc_id=vscode_docker_aka_helppanel)> y hacer esto:
 
 **Clonar el repositorio:**
-git clone <url-del-repo>
+git clone https://github.com/LuisNumeritos/Suma-Cifrada.git
 
 **Construir el Docker:**
 docker build -t suma-cifrada .
