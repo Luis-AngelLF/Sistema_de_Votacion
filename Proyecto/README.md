@@ -5,7 +5,7 @@ Para el proyecto de criptografía. <[Descargar Docker](https://learn.microsoft.c
 git clone https://github.com/LuisNumeritos/Suma-Cifrada.git
 
 **Construir el Docker:**
-docker build -t suma-cifrada .
+docker build -t proyectocripto .
 
 **Ejecutarlo:**
 docker run -it suma-cifrada
