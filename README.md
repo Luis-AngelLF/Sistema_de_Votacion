@@ -2,7 +2,7 @@
 Para el proyecto de criptografía. <[Descargar Docker](https://learn.microsoft.com/es-mx/visualstudio/docker/tutorials/docker-tutorial?WT.mc_id=vscode_docker_aka_helppanel)> y hacer esto:
 
 **Clonar el repositorio:**
-git clone https://github.com/LuisNumeritos/Suma-Cifrada.git
+git clone https://github.com/LuisNumeritos/Sistema_de_Votacion
 
 **Construir el Docker:**
 docker build -t suma-cifrada .
