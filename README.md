@@ -5,7 +5,7 @@ Para el proyecto de criptografía. <[Descargar Docker](https://learn.microsoft.c
 git clone https://github.com/Luis-AngelLF/Sistema_de_Votacion.git
 
 **Construir el Docker:**
-docker build -t suma-cifrada .
+docker build -t sistema_votacion .
 
 **Ejecutarlo:**
 docker run -it suma-cifrada
