@@ -6,6 +6,7 @@ WORKDIR /app
 
 # Copiar los archivos al contenedor
 COPY Proyecto.py .
+COPY dbconnection.py .
 COPY requirements.txt .
 
 # Instalar dependencias necesarias
