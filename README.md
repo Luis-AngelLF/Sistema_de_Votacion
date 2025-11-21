@@ -8,7 +8,7 @@ git clone https://github.com/Luis-AngelLF/Sistema_de_Votacion.git
 docker build -t sistema_votacion .
 
 **Ejecutarlo:**
-docker run -it suma-cifrada
+docker run -it sistema_votacion
 
 O instalar las librerías con:
 pip3 install phe
