@@ -2,7 +2,7 @@ import psycopg2
 def conectdatabase():
     try:
         
-        connection = psycopg2.connect("postgresql://postgres:PYW38OoZH6uCaY8v@db.yeefgklxezuefsdeenck.supabase.co:5432/postgres") #-- Conexión a la base de datos Supabase
+        connection = psycopg2.connect("postgresql://postgres.yeefgklxezuefsdeenck:kr2XYOyITOTBVAjd@aws-1-us-east-1.pooler.supabase.com:6543/postgres") #-- Conexión a la base de datos Supabase
         """
         Docstring for conectdatabase
         connection = psycopg2.connect( #-- Conexión a la base de datos local
@@ -15,4 +15,4 @@ def conectdatabase():
         #print(f'Conección exitosa a la base de datos{connection}')
         return connection
     except Exception as ex:
-        print(f'Error de conección: {ex}')
+        print(f'Error de conexión: {ex}') 
