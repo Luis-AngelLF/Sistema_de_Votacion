@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 //!CUANDO ESTE LISTO EL SUPABASE DESCOMENTAR ESTA LINEA
-// import supabase from "../lib/supabase";
+import supabase from "../lib/supabase";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -91,4 +91,3 @@ export default function Login() {
         </div>
     );
 }
-
