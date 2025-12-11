@@ -9,28 +9,35 @@ export default function Login() {
   const [error, setError] = useState("");
 
 
-    //!CUANDO ESTE LISTO EL SUPABASE USAR ESTE CODIGO PARA EL LOGINs
-
-  /** 
   async function handleLogin(e) {
     e.preventDefault();
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) {
-      setError("Correo o contraseña incorrectos");
-      return;
-    }
-    window.location.href = "/home";
-  }*/
+    setError("");
 
-    async function handleLogin(e) {
-        e.preventDefault();
+    try {
+      const response = await fetch("http://localhost:5000/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          correo: email,
+          password: password,
+        }),
+      });
 
-        // Simulación de login local
-        if (email === "test@correo.com" && password === "123456") {
-        // redirigir a Home
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        // Guardar datos del usuario en localStorage si quieres
+        localStorage.setItem("usuario", JSON.stringify(data.usuario));
+        // Redirigir a Home
         window.location.href = "/home";
-        } else {
-        setError("Correo o contraseña incorrectos");
+      } else {
+        setError(data.error || "Credenciales inválidas");
+      }
+    } catch (error) {
+      setError("Error al conectar con el servidor");
+      console.error("Error de login:", error);
     }
   }
 
