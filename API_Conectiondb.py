@@ -30,9 +30,11 @@ def home():
         "version": "1.0",
         "endpoints": {
             "health": "/api/health",
+            "public_key": "/api/public-key",
             "usuario": "/api/usuario/<cedula>",
             "elecciones": "/api/elecciones",
             "candidatos": "/api/candidatos/<id_eleccion>",
+            "login": "/api/auth/login (POST)",
             "votar": "/api/votar (POST)",
             "resultados": "/api/resultados/<id_eleccion>",
             "verificar_voto": "/api/verificar-voto/<cedula>/<id_eleccion>"
@@ -46,6 +48,18 @@ def health_check():
         "status": "ok",
         "message": "Servidor funcionando correctamente",
         "database": "connected" if conectdatabase() else "disconnected"
+    }), 200
+
+@app.route('/api/public-key', methods=['GET'])
+def get_public_key():
+    """Obtener clave pública para cifrado en el frontend"""
+    return jsonify({
+        "success": True,
+        "public_key": {
+            "n": str(public_key.n),
+            "g": str(public_key.n + 1)  # En Paillier, g es típicamente n+1
+        },
+        "message": "Clave pública para cifrado Paillier"
     }), 200
 
 @app.route('/api/usuario/<cedula>', methods=['GET'])
@@ -534,14 +548,18 @@ if __name__ == '__main__':
     print("=" * 60)
     print("🗳  Sistema de Votación con Blockchain - Backend API")
     print("=" * 60)
-    print(f"🔐 Clave Pública Paillier: {str(public_key.n)[:50]}...")
+    print(f"🔐 Clave Pública Paillier (n): {str(public_key.n)[:50]}...")
+    print(f"🔑 Clave Privada Paillier (p): {str(private_key.p)}")
+    print(f"🔑 Clave Privada Paillier (q): {str(private_key.q)}")
     print("=" * 60)
     print("\n📋 Endpoints disponibles:")
     print("  GET  /")
     print("  GET  /api/health")
+    print("  GET  /api/public-key")
     print("  GET  /api/usuario/<cedula>")
     print("  GET  /api/elecciones")
     print("  GET  /api/candidatos/<id_eleccion>")
+    print("  POST /api/auth/login")
     print("  POST /api/votar")
     print("  GET  /api/resultados/<id_eleccion>")
     print("  GET  /api/verificar-voto/<cedula>/<id_eleccion>")
