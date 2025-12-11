@@ -11,6 +11,7 @@ export default function ModalVotaciones({ show, onClose }) {
   }));
 
   return (
+
     <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center px-4">
       <div className="bg-[#1f2937]/90 text-white rounded-3xl shadow-2xl w-full max-w-5xl p-8 border border-white/20 animate-fadeIn overflow-y-auto max-h-[90vh]">
 
@@ -27,32 +28,42 @@ export default function ModalVotaciones({ show, onClose }) {
           Seleccione un recuadro para registrar su voto. Cada cuadrado representará un candidato con su foto o logo.
         </p>
 
-        {/* GRID de 4 columnas con más espacio vertical */}
-        <div className="grid grid-cols-4 gap-x-6 gap-y-6 justify-items-center mb-6">
+        {/* FORM con GRID de 4 columnas */}
+        <form className="grid grid-cols-4 gap-x-6 gap-y-6 justify-items-center mb-6">
           {opciones.map((opc) => (
-            <div
-              key={opc.id}
-              onClick={() => setSelected(opc.id)}
-              className={`
-                h-40 w-40 rounded-2xl flex items-center justify-center cursor-pointer overflow-hidden border transition-all
-                ${selected === opc.id 
-                  ? "border-indigo-500 bg-indigo-600/30 scale-105 shadow-lg" 
-                  : "border-white/20 bg-[#111827]/80 hover:bg-[#1c2430]"
-                }
-              `}
-            >
-              {opc.img ? (
-                <img 
-                  src={opc.img} 
-                  alt={`Candidato ${opc.id}`} 
-                  className="h-full w-full object-cover rounded-xl"
-                />
-              ) : (
-                <span className="text-gray-300 text-3xl font-bold">{opc.id}</span>
-              )}
+            <div key={opc.id} className="flex flex-col items-center">
+              <input
+                type="radio"
+                id={`candidato-${opc.id}`}
+                name="voto"
+                value={opc.id}
+                checked={selected === opc.id}
+                onChange={(e) => setSelected(Number(e.target.value))}
+                className="hidden"
+              />
+              <label
+                htmlFor={`candidato-${opc.id}`}
+                className={`
+                  h-40 w-40 rounded-2xl flex items-center justify-center cursor-pointer overflow-hidden border transition-all
+                  ${selected === opc.id 
+                    ? "border-indigo-500 bg-indigo-600/30 scale-105 shadow-lg" 
+                    : "border-white/20 bg-[#111827]/80 hover:bg-[#1c2430]"
+                  }
+                `}
+              >
+                {opc.img ? (
+                  <img 
+                    src={opc.img} 
+                    alt={`Candidato ${opc.id}`} 
+                    className="h-full w-full object-cover rounded-xl"
+                  />
+                ) : (
+                  <span className="text-gray-300 text-3xl font-bold">{opc.id}</span>
+                )}
+              </label>
             </div>
           ))}
-        </div>
+        </form>
 
         {/* BOTÓN CONFIRMAR */}
         <button
@@ -70,5 +81,6 @@ export default function ModalVotaciones({ show, onClose }) {
 
       </div>
     </div>
+
   );
 }

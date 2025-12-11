@@ -20,14 +20,14 @@ export default function Informacion() {
         {/* Encabezado */}
         <div className="mb-8">
           <h2 className="text-4xl font-bold text-white flex items-center gap-3">
-            Necesitas 
+            Información sobre 
             <span className="material-symbols-rounded text-indigo-400 text-4xl">
-              Saberlo!!
+              Votaciones 2026
             </span>
           </h2>
           <p className="text-gray-400 mt-2">
-            Consulta el estado del sistema, procesos activos y guías rápidas
-            para navegar dentro del panel administrativo.
+            Todo lo que necesitas saber sobre el proceso de votación, seguridad de tu voto
+            y cómo participar en las elecciones.
           </p>
         </div>
 
@@ -48,12 +48,13 @@ export default function Informacion() {
             "
           >
             <div className="flex items-center gap-3 mb-3">
-              <span className="material-symbols-rounded text-indigo-400">settings</span>
-              <h3 className="text-lg font-semibold text-white">Configuración</h3>
+              <span className="material-symbols-rounded text-indigo-400"> •</span>
+              <h3 className="text-lg font-semibold text-white">Cómo Votar</h3>
             </div>
             <p className="text-gray-400 text-sm leading-relaxed">
-              Revisa el estado general del sistema, parámetros configurados y
-              ajustes activos.
+              Selecciona tu candidato de preferencia en la papeleta digital.
+              Tu voto se encripta automáticamente para garantizar la privacidad
+              y seguridad de tu elección.
             </p>
           </div>
 
@@ -71,12 +72,13 @@ export default function Informacion() {
             "
           >
             <div className="flex items-center gap-3 mb-3">
-              <span className="material-symbols-rounded text-indigo-400">sync</span>
-              <h3 className="text-lg font-semibold text-white">Procesos Activos</h3>
+              <span className="material-symbols-rounded text-indigo-400">•</span>
+              <h3 className="text-lg font-semibold text-white">Privacidad del Voto</h3>
             </div>
             <p className="text-gray-400 text-sm leading-relaxed">
-              Visualiza información en tiempo real sobre módulos activos y
-              actividad reciente.
+              Tu voto está completamente protegido. Utilizamos encriptación Paillier
+              para garantizar que nadie pueda conocer tu elección, ni siquiera
+              el administrador del sistema.
             </p>
           </div>
 
@@ -94,12 +96,13 @@ export default function Informacion() {
             "
           >
             <div className="flex items-center gap-3 mb-3">
-              <span className="material-symbols-rounded text-indigo-400">dashboard</span>
-              <h3 className="text-lg font-semibold text-white">Estado Visual</h3>
+              <span className="material-symbols-rounded text-indigo-400"> •</span>
+              <h3 className="text-lg font-semibold text-white">Validación del Voto</h3>
             </div>
             <p className="text-gray-400 text-sm leading-relaxed">
-              Accede a resúmenes claros, indicadores visuales y métricas clave
-              del sistema.
+              Cada voto se registra en la blockchain para garantizar su integridad.
+              Puedes verificar que tu voto fue contabilizado correctamente sin
+              revelar tu elección.
             </p>
           </div>
 
@@ -117,12 +120,13 @@ export default function Informacion() {
             "
           >
             <div className="flex items-center gap-3 mb-3">
-              <span className="material-symbols-rounded text-indigo-400">menu_book</span>
-              <h3 className="text-lg font-semibold text-white">Guías Rápidas</h3>
+              <span className="material-symbols-rounded text-indigo-400"> •</span>
+              <h3 className="text-lg font-semibold text-white">Auditoría Transparente</h3>
             </div>
             <p className="text-gray-400 text-sm leading-relaxed">
-              Accede a instrucciones breves que te ayudarán a comprender cada
-              módulo sin complicaciones.
+              Todos los votos se registran en la blockchain pública. Los resultados
+              son auditables y verificables por cualquiera, garantizando total
+              transparencia en el proceso electoral.
             </p>
           </div>
 

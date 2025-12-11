@@ -20,8 +20,8 @@ export default function LargeGrid({ onCardClick }) {
         />
 
         <LargeCard
-          title="Reportes"
-          description="Visualiza información detallada."
+          title="Resultados"
+          description="Presenta los resultados de las votaciones."
           onCardClick={onCardClick}
         />
 
