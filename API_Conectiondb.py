@@ -33,64 +33,11 @@ def home():
             "usuario": "/api/usuario/<cedula>",
             "elecciones": "/api/elecciones",
             "candidatos": "/api/candidatos/<id_eleccion>",
-            "login": "/api/auth/login (POST)",
             "votar": "/api/votar (POST)",
             "resultados": "/api/resultados/<id_eleccion>",
             "verificar_voto": "/api/verificar-voto/<cedula>/<id_eleccion>"
         }
     }), 200
-
-@app.route('/api/auth/login', methods=['POST'])
-def login():
-    """Validar credenciales por correo y contraseña."""
-    try:
-        data = request.get_json()
-        if not data:
-            return jsonify({"error": "No se recibieron datos"}), 400
-
-        correo = data.get('correo') or data.get('email')
-        password = data.get('password')
-
-        if not correo or not password:
-            return jsonify({"error": "Faltan datos requeridos: correo y password"}), 400
-
-        db = conectdatabase()
-        if not db:
-            return jsonify({"error": "No se pudo conectar a la base de datos"}), 500
-
-        cursor = db.cursor()
-        cursor.execute(
-            "SELECT id_usuario, correo, rol, esta_activo, hash_contrasena FROM usuarios WHERE correo=%s",
-            (correo,)
-        )
-        row = cursor.fetchone()
-        cursor.close()
-        db.close()
-
-        if not row:
-            return jsonify({"error": "Credenciales inválidas"}), 401
-
-        id_usuario, correo_db, rol, esta_activo, hash_contrasena = row
-
-        # Comparar contraseña directamente (sin hash)
-        if hash_contrasena != password:
-            return jsonify({"error": "Credenciales inválidas"}), 401
-
-        if not esta_activo:
-            return jsonify({"error": "Usuario inactivo"}), 403
-
-        return jsonify({
-            "success": True,
-            "usuario": {
-                "id_usuario": id_usuario,
-                "correo": correo_db,
-                "rol": rol,
-                "esta_activo": esta_activo
-            }
-        }), 200
-
-    except Exception as ex:
-        return jsonify({"error": f"Error al validar credenciales: {str(ex)}"}), 500
 
 @app.route('/api/health', methods=['GET'])
 def health_check():
@@ -373,11 +320,6 @@ def registrar_voto():
              hash_blockchain)
         )
         
-        cursor.execute(
-            "update usuarios set havotado = true where id_usuario = %s",
-            (id_usuario,)
-        )
-        
         db.commit()
         cursor.close()
         db.close()
@@ -516,6 +458,60 @@ def verificar_voto(cedula, id_eleccion):
         return jsonify({
             "error": f"Error al verificar voto: {str(ex)}"
         }), 500
+    
+
+@app.route('/api/auth/login', methods=['POST'])
+def login():
+    """Validar credenciales por correo y contraseña."""
+    try:
+        data = request.get_json()
+        if not data:
+            return jsonify({"error": "No se recibieron datos"}), 400
+
+        correo = data.get('correo') or data.get('email')
+        password = data.get('password')
+
+        if not correo or not password:
+            return jsonify({"error": "Faltan datos requeridos: correo y password"}), 400
+
+        db = conectdatabase()
+        if not db:
+            return jsonify({"error": "No se pudo conectar a la base de datos"}), 500
+
+        cursor = db.cursor()
+        cursor.execute(
+            "SELECT id_usuario, cedula, correo, rol, esta_activo, hash_contrasena FROM usuarios WHERE correo=%s",
+            (correo,)
+        )
+        row = cursor.fetchone()
+        cursor.close()
+        db.close()
+
+        if not row:
+            return jsonify({"error": "Credenciales inválidas"}), 401
+
+        id_usuario, cedula, correo_db, rol, esta_activo, hash_contrasena = row
+
+        # Comparar contraseña directamente (sin hash)
+        if hash_contrasena != password:
+            return jsonify({"error": "Credenciales inválidas"}), 401
+
+        if not esta_activo:
+            return jsonify({"error": "Usuario inactivo"}), 403
+
+        return jsonify({
+            "success": True,
+            "usuario": {
+                "id_usuario": id_usuario,
+                "cedula": cedula,
+                "correo": correo_db,
+                "rol": rol,
+                "esta_activo": esta_activo
+            }
+        }), 200
+
+    except Exception as ex:
+        return jsonify({"error": f"Error al validar credenciales: {str(ex)}"}), 500
 
 # ==================== MANEJO DE ERRORES ====================
 
@@ -536,7 +532,7 @@ def internal_error(error):
 
 if __name__ == '__main__':
     print("=" * 60)
-    print("🗳️  Sistema de Votación con Blockchain - Backend API")
+    print("🗳  Sistema de Votación con Blockchain - Backend API")
     print("=" * 60)
     print(f"🔐 Clave Pública Paillier: {str(public_key.n)[:50]}...")
     print("=" * 60)
