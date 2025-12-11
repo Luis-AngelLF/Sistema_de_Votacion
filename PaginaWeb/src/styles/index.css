@@ -1,0 +1,56 @@
+@import "tailwindcss";
+
+
+:root {
+  --navbar-bg: #1E1B2E;
+  --nav-link-color: #B0AEC5;
+  --nav-link-active-color: #A78BFA;
+  --active-box-bg: #2A2540;
+}
+
+
+html {
+
+  scroll-behavior: smooth;
+  background-color: #0F111A;
+}
+
+/* Navbar */
+.navbar {
+  @apply absolute top-full mt-2 right-0 min-w-40 p-2 rounded-2xl scale-90 isolate blur-sm opacity-0 invisible transition-[opacity,transform,filter] md:static md:flex md:items-center md:mt-0 md:opacity-100 md:blur-none md:visible md:scale-100 backdrop-blur-2xl shadow-lg ;
+  background-color: var(--navbar-bg);
+  
+}
+.navbar.active {
+  @apply opacity-100 scale-100 blur-none visible;
+}
+
+/* Nav links */
+.nav-link {
+  @apply grid items-center h-9 px-4 text-sm font-medium tracking-wide transition-colors;
+  color: var(--nav-link-color);
+}
+.nav-link.active {
+  color: var(--nav-link-active-color);
+}
+
+/* Active box */
+.navbar .active-box {
+  @apply absolute top-2 left-2 right-2 h-9 rounded-lg -z-10 transition-[top,left] duration-500;
+  background-color: var(--active-box-bg);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.4s ease-out forwards;
+}
