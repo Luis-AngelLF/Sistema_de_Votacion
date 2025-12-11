@@ -206,7 +206,7 @@ def listar_candidatos(id_eleccion):
 
 @app.route('/api/votar', methods=['POST'])
 def registrar_voto():
-    """Registrar un voto encriptado"""
+    """Registrar un voto encriptado (vector de votos cifrados desde el frontend)"""
     try:
         data = request.get_json()
         
@@ -217,11 +217,17 @@ def registrar_voto():
         
         cedula = data.get('cedula')
         id_eleccion = data.get('id_eleccion')
-        id_candidato = data.get('id_candidato')
+        voto_cifrado_array = data.get('voto_cifrado')  # Array de strings cifrados
 
-        if not cedula or not id_eleccion or not id_candidato:
+        if not cedula or not id_eleccion or not voto_cifrado_array:
             return jsonify({
-                "error": "Faltan datos requeridos: cedula, id_eleccion, id_candidato"
+                "error": "Faltan datos requeridos: cedula, id_eleccion, voto_cifrado"
+            }), 400
+
+        # Validar que voto_cifrado sea una lista
+        if not isinstance(voto_cifrado_array, list) or len(voto_cifrado_array) == 0:
+            return jsonify({
+                "error": "voto_cifrado debe ser un array de valores cifrados"
             }), 400
 
         db = conectdatabase()
@@ -292,37 +298,17 @@ def registrar_voto():
                 "error": "Este usuario ya ha votado en esta elección"
             }), 403
 
-        # Verificar que el candidato existe y pertenece a esta elección
-        cursor.execute(
-            "SELECT u.nombre, u.apellido1, u.apellido2 "
-            "FROM candidatos c "
-            "INNER JOIN usuarios u ON c.id_usuario = u.id_usuario "
-            "WHERE c.id_candidato=%s AND c.id_eleccion=%s",
-            (id_candidato, id_eleccion)
-        )
-        candidato = cursor.fetchone()
-        
-        if not candidato:
-            cursor.close()
-            db.close()
-            return jsonify({
-                "error": "Candidato no válido o no pertenece a esta elección"
-            }), 404
+        # Convertir el array de votos cifrados a JSON para almacenar
+        voto_cifrado_json = json.dumps(voto_cifrado_array)
 
-        nombre_candidato = f"{candidato[0]} {candidato[1]} {candidato[2]}"
-
-        # Encriptar el voto
-        voto_encriptado = public_key.encrypt(int(id_candidato))
-        voto_cifrado = str(voto_encriptado.ciphertext())
-        
-        # Generar hash simulado para blockchain (en producción usar blockchain real)
-        hash_blockchain = f"0x{hash(voto_cifrado + str(datetime.now()))}"
+        # Generar hash para blockchain basado en el vector completo
+        hash_blockchain = f"0x{hash(voto_cifrado_json + str(datetime.now()) + cedula)}"
 
         # Registrar el voto en la base de datos
         cursor.execute(
             "INSERT INTO votos (id_eleccion, id_usuario, voto_cifrado, hash_blockchain, fecha_voto) "
             "VALUES (%s, %s, %s, %s, %s)",
-            (id_eleccion, id_usuario, voto_cifrado, hash_blockchain, datetime.now())
+            (id_eleccion, id_usuario, voto_cifrado_json, hash_blockchain, datetime.now())
         )
         
         # Registrar en logs de auditoría
@@ -330,7 +316,7 @@ def registrar_voto():
             "INSERT INTO logs_auditoria (id_usuario, accion, detalles, hash_blockchain) "
             "VALUES (%s, %s, %s, %s)",
             (id_usuario, 'VOTO_EMITIDO', 
-             f"Usuario {nombre_completo} votó en elección {eleccion[0]}", 
+             f"Usuario {nombre_completo} votó en elección {eleccion[0]} (vector cifrado)", 
              hash_blockchain)
         )
         
@@ -344,8 +330,7 @@ def registrar_voto():
             "detalles": {
                 "votante": nombre_completo,
                 "eleccion": eleccion[0],
-                "candidato": nombre_candidato,
-                "voto_encriptado": voto_cifrado[:50] + "...",  # Mostrar solo parte
+                "vector_size": len(voto_cifrado_array),
                 "hash_blockchain": hash_blockchain,
                 "fecha": datetime.now().isoformat()
             }
