@@ -60,7 +60,7 @@ def login():
 
         cursor = db.cursor()
         cursor.execute(
-            "SELECT id_usuario, correo, rol, esta_activo, password FROM usuarios WHERE correo=%s",
+            "SELECT id_usuario, correo, rol, esta_activo, hash_contrasena FROM usuarios WHERE correo=%s",
             (correo,)
         )
         row = cursor.fetchone()
@@ -70,10 +70,10 @@ def login():
         if not row:
             return jsonify({"error": "Credenciales inválidas"}), 401
 
-        id_usuario, correo_db, rol, esta_activo, password_db = row
+        id_usuario, correo_db, rol, esta_activo, hash_contrasena = row
 
         # Comparar contraseña directamente (sin hash)
-        if password_db != password:
+        if hash_contrasena != password:
             return jsonify({"error": "Credenciales inválidas"}), 401
 
         if not esta_activo:
