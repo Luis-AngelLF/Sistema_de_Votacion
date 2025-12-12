@@ -11,7 +11,7 @@ export default function Home() {
   const [cedula, setCedula] = useState(null);
   const [idUsuario, setIdUsuario] = useState(null);
 
-  // Obtener la cédula y id_usuario del usuario del localStorage o contexto
+  // Cargar usuario desde localStorage
   useEffect(() => {
     const userData = localStorage.getItem("usuario");
     if (userData) {
@@ -21,11 +21,9 @@ export default function Home() {
         setIdUsuario(user.id_usuario);
       } catch (error) {
         console.error("Error al parsear datos del usuario:", error);
-        // Redirigir al login si hay error en los datos
         window.location.href = "/login";
       }
     } else {
-      // Redirigir al login si no hay datos de usuario
       window.location.href = "/login";
     }
   }, []);
