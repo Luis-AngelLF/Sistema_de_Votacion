@@ -5,7 +5,7 @@ export default function LargeGrid({ onCardClick }) {
   const [elecciones, setElecciones] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const API_BASE = "http://localhost:5000/";
+  const API_BASE = "http://localhost:5000";
 
   // Obtener elecciones del API
   useEffect(() => {
